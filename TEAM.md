@@ -22,7 +22,7 @@
 | Người | Phần triển khai | Sản phẩm và trách nhiệm |
 | --- | --- | --- |
 | Cường | `src/lab8/shapes/workflow.py` | Luồng Python cố định; test riêng trong `src/tests/test_workflow.py`; chạy crash suite; tích hợp và kiểm tra hồ sơ nộp |
-| Trí | `src/lab8/shapes/single.py` | Vòng ReAct tối đa 8 bước, model chỉ chọn tool đọc; test riêng; benchmark 4 shape với seed quy định; tổng hợp metric và research card |
+| Hoàng Ngọc Minh Trí | `src/lab8/shapes/single.py` | Vòng ReAct tối đa 8 bước, model chỉ chọn tool đọc; test riêng; benchmark 4 shape với seed quy định; tổng hợp metric và research card |
 | Ánh | `src/lab8/shapes/orchestrator.py` | Orchestrator và investigator chỉ đọc; handoff qua allowlist; test riêng; rà trace và tổng hợp báo cáo nhóm |
 
 - Mỗi người chịu trách nhiệm contract kết quả, quote đầy đủ, approval, trace và crash trong shape mình viết; không sửa host hoặc thước đo có sẵn.
@@ -37,7 +37,7 @@ Giữ nguyên tiêu đề và các cột để `python -m lab8.check_submission`
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
 | Nguyễn Thế Cường | Workflow; test hồi quy; kiểm thử crash | `b75d072` (triển khai Workflow); `8ede40e` (test, báo cáo cá nhân và crash report); `1b2c4af` (cập nhật báo cáo cá nhân trên nhánh ntc) | `src/tests/test_workflow.py`: 7 hàm, 8 trường hợp chạy, đã nằm trong commit `8ede40e`; kiểm tra ticket injection, thiếu order_id, rò secret, approval hết hạn, cap theo approval, approval sai claim và crash/resume/retry; kết quả 8 passed |
-| Hoàng Ngọc Minh Trí (2A202603379) | Shape B (single), benchmark/evaluation, research card | uncommitted | `tests/test_react_step_cap.py::test_react_stops_at_step_cap` (added); `tests/test_public_matrix.py` (62 Shape B cases passed) |
+| Hoàng Ngọc Minh Trí (2A202603379) | Shape B (single), benchmark/evaluation, research card | `8c67fde` | `src/tests/test_react_step_cap.py::test_react_stops_at_step_cap` (added); `src/tests/test_public_matrix.py` (62 Shape B cases passed) |
 | Chử Thị Ánh (2A202603360) | Orchestrator; handoff; trace; tổng hợp báo cáo nhóm | `0d3fa46` | `src/tests/test_orchestrator_contract.py`: 4 test passed; toàn bộ test student 248 passed; kiểm tra handoff allowlist, chặn write tool, trace có `run_id`, không chứa secret/PII/`parent_secret`, và crash được truyền xuống `issue_refund` |
 
 ## Cá nhân

@@ -63,14 +63,14 @@ Benchmark lấy từ `src/reports/benchmark.json`, gồm 14 claim × 5 seed = 70
 
 | Shape | Pass rate | Pass^5 | Seed min–max | Variance | Cost/success (VND) | Mean/P95 steps |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| workflow | 100.00% | 100.00% | 100%–100% | 0.000000 | 36.43 | 4.93 / 6 |
+| workflow | 100.00% | 100.00% | 100%–100% | 0.000000 | 27.86 | 3.79 / 4 |
 | single | 100.00% | 100.00% | 100%–100% | 0.000000 | 48.18 | 6.64 / 8 |
-| orchestrator | 100.00% | 100.00% | 100%–100% | 0.000000 | 55.71 | 5.00 / 6 |
+| orchestrator | 100.00% | 100.00% | 100%–100% | 0.000000 | 46.43 | 3.71 / 4 |
 | swarm | 98.57% | 92.86% | 92.86%–100% | 0.000816 | 49.57 | 2.80 / 3 |
 
 `workflow`, `single` và `orchestrator` đều đạt 70/70 trial. `swarm` đạt 69/70; một trial sai status ở seed 55.
 
-Workflow có chi phí thấp nhất. Single có thêm chi phí model và số bước cao hơn nhưng vẫn đạt pass rate tuyệt đối. Orchestrator cũng đạt 70/70 nhưng có chi phí cao nhất do thực hiện nhiều read-only tool calls. Swarm có ít bước hơn nhưng kém ổn định hơn trên trial có seed 55.
+Workflow có chi phí thấp nhất. Single có thêm chi phí model và số bước cao hơn nhưng vẫn đạt pass rate tuyệt đối. Orchestrator cũng đạt 70/70; cost/success thấp hơn single một chút nhưng cao hơn workflow. Swarm có ít bước hơn nhưng kém ổn định hơn trên trial có seed 55.
 
 Crash safety lấy từ `src/reports/crash.json` là `20/20`.
 
@@ -127,7 +127,7 @@ Chi tiết từng thành viên được ghi trong [TEAM.md](../../TEAM.md) và c
 - Chi phí là simulated VND, không phải hóa đơn API thực tế.
 - Latency hiện là `unavailable`.
 - Kết quả không chứng minh rằng topology là nguyên nhân duy nhất của chênh lệch nếu prompt, tool hoặc implementation thay đổi.
-- Orchestrator đạt pass rate tuyệt đối nhưng cost/success cao hơn workflow và single trong public benchmark.
+- Orchestrator đạt pass rate tuyệt đối; cost/success cao hơn workflow nhưng thấp hơn single một chút trong public benchmark.
 - Handoff và trace hiện được kiểm tra bằng contract test; production cần bổ sung schema validation, access control, audit storage và policy kiểm duyệt PII.
 - Cần chạy lại benchmark trên hidden workload hoặc corpus lớn hơn trước khi kết luận về production.
 

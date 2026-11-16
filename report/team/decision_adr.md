@@ -15,11 +15,11 @@ Ví dụ một dòng đã điền: `- Shape chọn: workflow`, `- Crash safety: 
 
 ## Vì sao shape này
 
-Chọn `single` để mang Shape B — một bounded ReAct agent — qua evaluation tiếp theo. Trên cùng 14 public claim và 5 seed, `single` đạt 70/70 pass và pass^5 14/14; mỗi seed đều đạt 14/14. Đây không phải lựa chọn có chi phí thấp nhất: `workflow` cũng đạt 70/70 nhưng tốn 36.43 simulated VND/success so với 48.18 của `single`. Nhóm chấp nhận thêm 11.75 VND/success và 1.71 trace events trung bình để tiếp tục với agentic ReAct path; chi phí `single` bao gồm token model được tính bằng `MockLLM.complete`. Nếu mục tiêu chuyển sang giảm chi phí mà không cần ReAct, `workflow` là lựa chọn hợp lý hơn theo benchmark hiện tại.
+Chọn `single` để mang Shape B — một bounded ReAct agent — qua evaluation tiếp theo. Trên cùng 14 public claim và 5 seed, `single` đạt 70/70 pass và pass^5 14/14; mỗi seed đều đạt 14/14. Đây không phải lựa chọn tiết kiệm nhất: `workflow` cũng đạt 70/70 nhưng tốn 27.86 simulated VND/success so với 48.18 của `single`; `single` có thêm 2.86 trace events trung bình. Nhóm giữ `single` vì mục tiêu đánh giá ReAct path, không phải vì ưu thế về chi phí. Chi phí `single` bao gồm token model được tính bằng `MockLLM.complete`. Nếu ưu tiên giảm cost trong benchmark hiện tại, `workflow` là lựa chọn hợp lý hơn.
 
 ## Có đáng đổi lấy multi-agent không
 
-Trên benchmark mới, `orchestrator` pass rate cũng là 1.000 nhưng cost/success cao hơn (`55.71` VND) mà không cải thiện pass^5 so với `single`; `swarm` pass rate là `0.986` và pass^5 là `0.929`. Vì vậy hiện không đổi sang multi-agent. Xem xét lại nếu hidden workload cho thấy lợi ích pass/robustness đủ bù cost, hoặc nếu một ablation mới đổi corpus/model và giữ nguyên các control khác.
+Trên benchmark mới, `orchestrator` đạt cùng pass rate `1.000` nhưng cost/success thấp hơn một chút (`46.43` so với `48.18` VND) và không cải thiện pass^5 so với `single`; `swarm` pass rate là `0.986` và pass^5 là `0.929`. Vì vậy lựa chọn `single` không được diễn giải là tốt hơn về hiệu quả chi phí; đây là lựa chọn tiếp tục kiểm thử ReAct. Xem xét lại nếu mục tiêu tối ưu là chi phí hoặc hidden workload cho thấy khác biệt về pass/robustness.
 
 ## Trace và bằng chứng
 

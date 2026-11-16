@@ -5,7 +5,7 @@
 - Họ tên: Hoàng Ngọc Minh Trí
 - MSSV: 2A202603379
 - Email: 26ai.trihnm@vinuni.edu.vn
-- GitHub: GaGionCay
+- GitHub: https://github.com/GaGionCay
 
 ## 2. Phần việc phụ trách
 
@@ -24,11 +24,11 @@
 
 ## 4. Bằng chứng
 
-- **Benchmark:** [`reports/benchmark.json`](https://github.com/GaGionCay/K5-L3A-DAY08-CAT-FromWorkflowsToAgents/blob/8c67fde767d81c64efb829398b6084e44e4dd7ad/src/reports/benchmark.json) — bốn shape, 14 claims × 5 seeds; `workflow` và `single` có 70 cặp trial. `single` đạt 70/70 pass, 100% ở từng seed, cost/success `48.18` simulated VND và mean/p95 trace steps `6.64/8`.
-- **Paired run IDs:** [research card tại commit đóng góp](https://github.com/GaGionCay/K5-L3A-DAY08-CAT-FromWorkflowsToAgents/blob/8c67fde767d81c64efb829398b6084e44e4dd7ad/report/team/research_card.md) liệt kê đầy đủ run IDs theo claim và seed; ví dụ `R-workflow-C-001-s11` ↔ `R-single-C-001-s11`.
-- **Crash test:** [`reports/crash.json`](https://github.com/GaGionCay/K5-L3A-DAY08-CAT-FromWorkflowsToAgents/blob/8c67fde767d81c64efb829398b6084e44e4dd7ad/src/reports/crash.json) — 20/20.
-- **Kiểm thử:** Shape B public cases 62/62; public matrix cùng các regression tests trong lần chạy gần nhất 250 passed; benchmark analyzer test 1 passed. Regression tests gồm [`test_react_stops_at_step_cap`](https://github.com/GaGionCay/K5-L3A-DAY08-CAT-FromWorkflowsToAgents/blob/8c67fde767d81c64efb829398b6084e44e4dd7ad/src/tests/test_react_step_cap.py) và [`test_single_budget_tracks_mock_llm_tokens_and_cost`](https://github.com/GaGionCay/K5-L3A-DAY08-CAT-FromWorkflowsToAgents/blob/8c67fde767d81c64efb829398b6084e44e4dd7ad/src/tests/test_single_budget.py).
-- **Submission check:** commit được cung cấp có báo cáo kết quả benchmark/crash nêu trên. Tuy nhiên, lần chạy lại trong checkout hiện tại trả về `14 FAIL, 1 WARN` (các shape bị nhận diện là `not_implemented`, thiếu benchmark/crash report và một số trường submission còn trống). Do đó kết quả `0 FAIL, 0 WARN` chưa thể xác nhận cho checkout hiện tại.
+- **Benchmark:** [`benchmark.json`](../../src/reports/benchmark.json) — bốn shape, 14 claims × 5 seeds; `workflow` và `single` có 70 cặp trial. `single` đạt 70/70 pass, 100% ở từng seed, cost/success `48.18` simulated VND và mean/p95 trace steps `6.64/8`.
+- **Paired run IDs:** [research card](./research_card.md) liệt kê đầy đủ run IDs theo claim và seed; ví dụ `R-workflow-C-001-s11` ↔ `R-single-C-001-s11`.
+- **Crash test:** [`crash.json`](../../src/reports/crash.json) — 20/20.
+- **Kiểm thử:** Shape B public cases 62/62; toàn bộ student suite 248 passed; full default pytest 69 passed (248 student cases deselected); hai regression tests của ReAct 2/2. Regression tests gồm [`test_react_stops_at_step_cap`](../../src/tests/test_react_step_cap.py) và [`test_single_budget_tracks_mock_llm_tokens_and_cost`](../../src/tests/test_single_budget.py).
+- **Submission check:** `python -m lab8.check_submission` trả về `0 FAIL, 1 WARN`; warning duy nhất là các thay đổi hiện tại chưa commit (`HEAD 215a77f`).
 
 ## 5. Công cụ AI đã dùng
 
