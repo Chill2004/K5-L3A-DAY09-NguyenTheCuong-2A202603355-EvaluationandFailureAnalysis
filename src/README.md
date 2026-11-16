@@ -100,6 +100,7 @@ Mỗi lệnh nằm trên một dòng, nên copy được vào PowerShell, cmd ha
 | Chạy một claim | `python -m lab8.run --shape swarm --claim-id C-001 --seed 11 --db data/run.sqlite` |
 | Chạy một claim với crash | `python -m lab8.run --shape workflow --claim-id C-012 --seed 11 --db data/crash.sqlite --crash-at after_effect_before_checkpoint` |
 | Benchmark 4 shape × 5 seed | `python -m lab8.benchmark --shapes workflow,single,orchestrator,swarm --cases data/public_claims.jsonl --seeds 11,22,33,44,55 --out reports/benchmark.json` |
+| Tổng hợp metric benchmark theo shape | `python -m scripts.analyze_benchmark --input reports/benchmark.json` |
 | Crash suite 20 điểm | `python -m lab8.crash_test --count 20 --out reports/crash.json` |
 | Demo phản ví dụ (checkpoint không thay được ledger) | `python -m lab8.demo.buggy_workflow` |
 

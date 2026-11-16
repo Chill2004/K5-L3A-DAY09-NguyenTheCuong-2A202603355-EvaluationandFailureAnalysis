@@ -17,19 +17,41 @@ Phần này nối tiếp phần mini research ở buổi lý thuyết (slide 62�
 
 | Field | Hướng dẫn | Nhóm điền |
 | --- | --- | --- |
-| CÂU | R1 / R2 / R3 / R4 | |
-| SOURCE | Paper/blog, năm, URL, loại bằng chứng (benchmark, production report, blog kinh nghiệm) | |
-| CLAIM | Một kết luận gốc của nguồn. Không viết rộng hơn phạm vi paper | |
-| BOUNDARY | Model / dataset / setup giới hạn kết luận đó | |
-| HYPOTHESIS | Nếu đổi shape A→B (hoặc bật/tắt một thành phần), metric X sẽ đổi theo hướng nào, khoảng bao nhiêu | |
-| METHOD | Biến giữ cố định: model, tools, seed, corpus, giá, evaluator. Biến duy nhất được thay đổi: … | |
-| FAILURE / METRIC | Một lỗi dự kiến và cách đo nó: pass rate, pass^5, variance, cost/success, leak, bypass | |
+| CÂU | R1 / R2 / R3 / R4 | R4 — Evaluation confounders |
+| SOURCE | Yao et al., 2022, ReAct: Synergizing Reasoning and Acting in Language Models (https://arxiv.org/abs/2210.03629), loại bằng chứng: Benchmark & Research Paper (nghiên cứu thực nghiệm về các tác nhân ReAct và đánh giá hiệu năng vòng lặp bước). |
+| CLAIM | Một kết luận gốc của nguồn. Không viết rộng hơn phạm vi paper | Thiết kế benchmark giữ corpus, seed, giá, evaluator và cô lập DB như nhau giữa các shape; do đó báo cáo hỗ trợ mô tả chênh lệch trên public corpus này, không tự nó chứng minh tác động nhân quả của topology. |
+| BOUNDARY | Model / dataset / setup giới hạn kết luận đó | Chỉ public corpus hiện có (14 claim × 5 seed = 70 trial/shape), `MockLLM`, ngày `as_of=2026-11-15`, bảng giá mô phỏng VND và các implementation trong snapshot benchmark. Không ngoại suy sang hidden set hay production; latency là `unavailable`. |
+| HYPOTHESIS | Nếu đổi shape A→B (hoặc bật/tắt một thành phần), metric X sẽ đổi theo hướng nào, khoảng bao nhiêu | H1, ghi trước lần benchmark được tạo lại: khi cả hai shape hoàn chỉnh theo cùng business contract, `single` sẽ không kém `workflow` quá 5 điểm phần trăm về pass rate; `single` dự kiến tốn simulated cost/success và trace steps cao hơn do vòng ReAct. Report cũ có trước H1; chỉ lần chạy mới bên dưới dùng để đánh giá H1. |
+| METHOD | Biến giữ cố định: model, tools, seed, corpus, giá, evaluator. Biến duy nhất được thay đổi: … | Cặp so sánh `workflow` (deterministic workflow) với `single` (một ReAct agent, cap 8 bước; tool worker chỉ đọc, host duy nhất ghi refund). Cố định theo metadata: 14 claim C-001…C-014, seed 11/22/33/44/55, `MockLLM`, `as_of=2026-11-15`, pricing simulated (20 VND/1k input tokens, 80 VND/1k output tokens, 10 VND/tool call), evaluator `trial_pass`, cùng tool adapters/manifest khả dụng, fresh SQLite cho từng trial. Ghép cặp theo đúng `(claim_id, seed)`; shape là biến treatment. Các tool được gọi thực tế có thể khác theo shape. |
+| FAILURE / METRIC | Một lỗi dự kiến và cách đo nó: pass rate, pass^5, variance, cost/success, leak, bypass | Theo dõi paired pass/fail, pass rate, pass^5, 5 seed rates/min/max/population variance, cost/success, mean/p95 trace events, trace/leak và approval bypass. Failure mode cần kiểm soát: một shape chưa implement có thể làm chênh lệch trông như hiệu quả kiến trúc; kiểm tra status/reason và source trước khi diễn giải. Cost là mô phỏng, không phải hóa đơn API. |
 
 ## Kết quả ablation
 
-- Lệnh đã chạy (copy nguyên văn):
-- Run id / file report:
-- Kết quả so với hypothesis (đúng / sai / không kết luận được), kèm số liệu:
-- Giới hạn: MockLLM không phải model sản xuất, latency là `unavailable`.
+- **Lệnh benchmark đã chạy (PowerShell, từ `src/`):** `python -m lab8.benchmark --shapes workflow,single,orchestrator,swarm --cases data\public_claims.jsonl --seeds 11,22,33,44,55 --out reports\benchmark.json`
+- **Report:** `src/reports/benchmark.json`. JSON ghi `run_id` theo từng trial, không có một benchmark-level run id. Bảng dưới liệt kê đủ 70 cặp run id của `workflow` và `single`; mỗi cặp dùng chung claim và seed.
+- **Kiểm soát xác nhận từ report:** 14 claim, 5 seed, 70 cặp duy nhất và không trùng; metadata ghi `MockLLM`, `as_of=2026-11-15`, simulated VND pricing và `fresh_sqlite_per_trial`. Benchmark runner gọi cùng evaluator `trial_pass` cho mọi shape.
+- **Kết quả paired:** 70/70 cặp đều pass ở cả hai shape; 0 cặp discordant. Mỗi seed có 14/14 pass cho cả `workflow` và `single`; chênh lệch pass rate là 0 pp ở mọi seed. Pass^5: 14/14 (100%) cho cả hai; population variance 0, min/max 100–100%.
+- **Cost / trace:** `workflow` tổng cost mô phỏng 2,550 VND, cost/success 36.43 VND, mean/p95 steps 4.93/6; `single` tổng 3,372.90 VND, cost/success 48.18 VND, mean/p95 steps 6.64/8. `single` cao hơn 11.75 VND/success và 1.71 trace events trung bình. Chi phí `single` bao gồm token model được tích lũy qua `MockLLM.complete`; latency `unavailable`.
+- **Đối chiếu hypothesis:** H1 được hỗ trợ trên public benchmark này: `single` ngang `workflow` về pass rate (100%, chênh 0 pp, nằm trong biên không-kém-hơn 5 pp) và tốn cost/success, trace steps cao hơn. Đây là paired description trên 70 cặp, không phải chứng minh tổng quát hay đánh giá production.
+- **Giới hạn / thời điểm hypothesis:** H1 được ghi trước benchmark mới; file report trước đó là kết quả lịch sử và không dùng để kiểm định H1. Các implementation hoàn tất trước lần chạy mới. Public set có 14 claim, không phải hidden 40 claim; MockLLM không phải model production; giá là mô phỏng; latency `unavailable`.
+
+### Paired run IDs (workflow ↔ single)
+
+| Claim | Seed: workflow run_id ↔ single run_id |
+| --- | --- |
+| C-001 | 11: `R-workflow-C-001-s11` ↔ `R-single-C-001-s11`; 22: `R-workflow-C-001-s22` ↔ `R-single-C-001-s22`; 33: `R-workflow-C-001-s33` ↔ `R-single-C-001-s33`; 44: `R-workflow-C-001-s44` ↔ `R-single-C-001-s44`; 55: `R-workflow-C-001-s55` ↔ `R-single-C-001-s55` |
+| C-002 | 11: `R-workflow-C-002-s11` ↔ `R-single-C-002-s11`; 22: `R-workflow-C-002-s22` ↔ `R-single-C-002-s22`; 33: `R-workflow-C-002-s33` ↔ `R-single-C-002-s33`; 44: `R-workflow-C-002-s44` ↔ `R-single-C-002-s44`; 55: `R-workflow-C-002-s55` ↔ `R-single-C-002-s55` |
+| C-003 | 11: `R-workflow-C-003-s11` ↔ `R-single-C-003-s11`; 22: `R-workflow-C-003-s22` ↔ `R-single-C-003-s22`; 33: `R-workflow-C-003-s33` ↔ `R-single-C-003-s33`; 44: `R-workflow-C-003-s44` ↔ `R-single-C-003-s44`; 55: `R-workflow-C-003-s55` ↔ `R-single-C-003-s55` |
+| C-004 | 11: `R-workflow-C-004-s11` ↔ `R-single-C-004-s11`; 22: `R-workflow-C-004-s22` ↔ `R-single-C-004-s22`; 33: `R-workflow-C-004-s33` ↔ `R-single-C-004-s33`; 44: `R-workflow-C-004-s44` ↔ `R-single-C-004-s44`; 55: `R-workflow-C-004-s55` ↔ `R-single-C-004-s55` |
+| C-005 | 11: `R-workflow-C-005-s11` ↔ `R-single-C-005-s11`; 22: `R-workflow-C-005-s22` ↔ `R-single-C-005-s22`; 33: `R-workflow-C-005-s33` ↔ `R-single-C-005-s33`; 44: `R-workflow-C-005-s44` ↔ `R-single-C-005-s44`; 55: `R-workflow-C-005-s55` ↔ `R-single-C-005-s55` |
+| C-006 | 11: `R-workflow-C-006-s11` ↔ `R-single-C-006-s11`; 22: `R-workflow-C-006-s22` ↔ `R-single-C-006-s22`; 33: `R-workflow-C-006-s33` ↔ `R-single-C-006-s33`; 44: `R-workflow-C-006-s44` ↔ `R-single-C-006-s44`; 55: `R-workflow-C-006-s55` ↔ `R-single-C-006-s55` |
+| C-007 | 11: `R-workflow-C-007-s11` ↔ `R-single-C-007-s11`; 22: `R-workflow-C-007-s22` ↔ `R-single-C-007-s22`; 33: `R-workflow-C-007-s33` ↔ `R-single-C-007-s33`; 44: `R-workflow-C-007-s44` ↔ `R-single-C-007-s44`; 55: `R-workflow-C-007-s55` ↔ `R-single-C-007-s55` |
+| C-008 | 11: `R-workflow-C-008-s11` ↔ `R-single-C-008-s11`; 22: `R-workflow-C-008-s22` ↔ `R-single-C-008-s22`; 33: `R-workflow-C-008-s33` ↔ `R-single-C-008-s33`; 44: `R-workflow-C-008-s44` ↔ `R-single-C-008-s44`; 55: `R-workflow-C-008-s55` ↔ `R-single-C-008-s55` |
+| C-009 | 11: `R-workflow-C-009-s11` ↔ `R-single-C-009-s11`; 22: `R-workflow-C-009-s22` ↔ `R-single-C-009-s22`; 33: `R-workflow-C-009-s33` ↔ `R-single-C-009-s33`; 44: `R-workflow-C-009-s44` ↔ `R-single-C-009-s44`; 55: `R-workflow-C-009-s55` ↔ `R-single-C-009-s55` |
+| C-010 | 11: `R-workflow-C-010-s11` ↔ `R-single-C-010-s11`; 22: `R-workflow-C-010-s22` ↔ `R-single-C-010-s22`; 33: `R-workflow-C-010-s33` ↔ `R-single-C-010-s33`; 44: `R-workflow-C-010-s44` ↔ `R-single-C-010-s44`; 55: `R-workflow-C-010-s55` ↔ `R-single-C-010-s55` |
+| C-011 | 11: `R-workflow-C-011-s11` ↔ `R-single-C-011-s11`; 22: `R-workflow-C-011-s22` ↔ `R-single-C-011-s22`; 33: `R-workflow-C-011-s33` ↔ `R-single-C-011-s33`; 44: `R-workflow-C-011-s44` ↔ `R-single-C-011-s44`; 55: `R-workflow-C-011-s55` ↔ `R-single-C-011-s55` |
+| C-012 | 11: `R-workflow-C-012-s11` ↔ `R-single-C-012-s11`; 22: `R-workflow-C-012-s22` ↔ `R-single-C-012-s22`; 33: `R-workflow-C-012-s33` ↔ `R-single-C-012-s33`; 44: `R-workflow-C-012-s44` ↔ `R-single-C-012-s44`; 55: `R-workflow-C-012-s55` ↔ `R-single-C-012-s55` |
+| C-013 | 11: `R-workflow-C-013-s11` ↔ `R-single-C-013-s11`; 22: `R-workflow-C-013-s22` ↔ `R-single-C-013-s22`; 33: `R-workflow-C-013-s33` ↔ `R-single-C-013-s33`; 44: `R-workflow-C-013-s44` ↔ `R-single-C-013-s44`; 55: `R-workflow-C-013-s55` ↔ `R-single-C-013-s55` |
+| C-014 | 11: `R-workflow-C-014-s11` ↔ `R-single-C-014-s11`; 22: `R-workflow-C-014-s22` ↔ `R-single-C-014-s22`; 33: `R-workflow-C-014-s33` ↔ `R-single-C-014-s33`; 44: `R-workflow-C-014-s44` ↔ `R-single-C-014-s44`; 55: `R-workflow-C-014-s55` ↔ `R-single-C-014-s55` |
 
 Muốn đi xa hơn một ablation để lấy điểm cộng thì xem [docs/bonus_topics.md](../../docs/bonus_topics.md).

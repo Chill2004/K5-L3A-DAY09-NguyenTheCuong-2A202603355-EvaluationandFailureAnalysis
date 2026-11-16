@@ -11,8 +11,7 @@
 
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
-|   1 |        |      |       |        |         |
-|   2 |        |      |       |        |         |
+|   1 | Trí | 2A202603379 | 26ai.trihnm@vinuni.edu.vn | — | Shape B (single), benchmark/evaluation, research card |
 
 Gợi ý chia vai:
 
@@ -25,7 +24,7 @@ Gợi ý chia vai:
 
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
-| | | | |
+| Trí (2A202603379) | Shape B (single), benchmark/evaluation, research card | uncommitted | `tests/test_react_step_cap.py::test_react_stops_at_step_cap` (added); `tests/test_public_matrix.py` (62 Shape B cases passed) |
 
 ## Cá nhân
 
