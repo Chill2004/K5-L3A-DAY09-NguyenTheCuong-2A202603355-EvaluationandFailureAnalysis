@@ -6,7 +6,7 @@
 - Lớp: L3A
 - Repo: `https://github.com/GaGionCay/K5-L3A-DAY08-CAT-FromWorkflowsToAgents`
 - Thành viên: Nguyễn Thế Cường, Hoàng Ngọc Minh Trí, Chử Thị Ánh.
-- Commit chốt: `<COMMIT_CHOT>`.
+- Commit chốt: `33267fa`.
 
 ## 2. Mục tiêu và cách tiếp cận
 

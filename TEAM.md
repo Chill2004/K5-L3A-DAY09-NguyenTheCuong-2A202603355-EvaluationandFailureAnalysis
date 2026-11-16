@@ -7,7 +7,7 @@
 - Repo nhóm: `K5-L3A-DAY08-CAT-FromWorkflowsToAgents`
 - URL repo: https://github.com/GaGionCay/K5-L3A-DAY08-CAT-FromWorkflowsToAgents
 - Nhánh nộp: `main`.
-- Commit chốt: Chưa chốt; bổ sung sau khi tích hợp, kiểm thử và đối chiếu với `report/team/decision_adr.md`.
+- Commit chốt: `33267fa`
 
 ## Thành viên
 
