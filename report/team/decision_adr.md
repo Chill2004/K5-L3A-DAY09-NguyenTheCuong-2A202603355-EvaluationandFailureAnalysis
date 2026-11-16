@@ -4,7 +4,7 @@
 `Shape chọn` phải là đúng một trong: `workflow`, `single`, `orchestrator`, `swarm`. Đây là shape được chấm cổng hidden.
 
 - Shape chọn: single
-- Commit hash: uncommitted (HEAD `034c6c4`)
+- Commit hash: 8c67fde767d81c64efb829398b6084e44e4dd7ad
 - Run id dẫn chứng: `R-single-C-001-s11`
 - Pass rate / pass^5 / seed min-max / variance: `1.000 / 1.000 / 1.000–1.000 / 0.000000` (70 trials, 14 claims × 5 seeds)
 - Cost per success (mô phỏng, VND): `48.18` (total simulated cost `3,372.90`)
