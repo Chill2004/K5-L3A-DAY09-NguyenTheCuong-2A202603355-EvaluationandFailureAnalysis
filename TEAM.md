@@ -36,7 +36,7 @@ Giữ nguyên tiêu đề và các cột để `python -m lab8.check_submission`
 
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
-| Nguyễn Thế Cường | Workflow; test hồi quy; kiểm thử crash | `b75d072` (Workflow); commit chứa test và báo cáo sẽ bổ sung sau | `src/tests/test_workflow.py`: 7 hàm, 8 trường hợp chạy; test hiện chưa được xác nhận có trong lịch sử commit |
+| Nguyễn Thế Cường | Workflow; test hồi quy; kiểm thử crash | `b75d072` (triển khai Workflow); `8ede40e` (test, báo cáo cá nhân và crash report); `1b2c4af` (cập nhật báo cáo cá nhân trên nhánh ntc) | `src/tests/test_workflow.py`: 7 hàm, 8 trường hợp chạy, đã nằm trong commit `8ede40e`; kiểm tra ticket injection, thiếu order_id, rò secret, approval hết hạn, cap theo approval, approval sai claim và crash/resume/retry; kết quả 8 passed |
 | Hoàng Ngọc Minh Trí (2A202603379) | Shape B (single), benchmark/evaluation, research card | uncommitted | `tests/test_react_step_cap.py::test_react_stops_at_step_cap` (added); `tests/test_public_matrix.py` (62 Shape B cases passed) |
 | Chử Thị Ánh (2A202603360) | Orchestrator; handoff; trace; tổng hợp báo cáo nhóm | `0d3fa46` | `src/tests/test_orchestrator_contract.py`: 4 test passed; toàn bộ test student 248 passed; kiểm tra handoff allowlist, chặn write tool, trace có `run_id`, không chứa secret/PII/`parent_secret`, và crash được truyền xuống `issue_refund` |
 
