@@ -5,7 +5,7 @@
 - Họ tên: Hoàng Ngọc Minh Trí
 - MSSV: 2A202603379
 - Email: 26ai.trihnm@vinuni.edu.vn
-- GitHub: https://github.com/GaGionCay/K5-L3A-DAY08-CAT-FromWorkflowsToAgents
+- GitHub: GaGionCay
 
 ## 2. Phần việc phụ trách
 
