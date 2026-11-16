@@ -14,6 +14,7 @@
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
 | 1 | Nguyễn Thế Cường | 2A202603355 | 26ai.cuongnt2@vinuni.edu.vn | Chill2004 | Workflow; tích hợp; kiểm thử crash; checklist nộp bài |
+| 2 | Trí | 2A202603379 | 26ai.trihnm@vinuni.edu.vn | — | Shape B (single), benchmark/evaluation, research card |
 
 ## Phân công và phối hợp
 
@@ -35,7 +36,8 @@ Giữ nguyên tiêu đề và các cột để `python -m lab8.check_submission`
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
 | Nguyễn Thế Cường | Workflow; test hồi quy; kiểm thử crash | `b75d072` (Workflow); commit chứa test và báo cáo sẽ bổ sung sau | `src/tests/test_workflow.py`: 7 hàm, 8 trường hợp chạy; test hiện chưa được xác nhận có trong lịch sử commit |
-
+| Trí (2A202603379) | Shape B (single), benchmark/evaluation, research card | uncommitted | `tests/test_react_step_cap.py::test_react_stops_at_step_cap` (added); `tests/test_public_matrix.py` (62 Shape B cases passed) |
+| Chu Thi Anh (2A202603360) | Orchestrator; handoff; trace | `<commit-hash>` | Test orchestrator: 62 passed |
 
 ## Cá nhân
 
