@@ -1,54 +1,54 @@
-# Team
+﻿# Team
 
 ## Thông tin nhóm
 
-- Tên nhóm:
+- Tên nhóm: CAT
 - Lớp: L3A
-- Repo nhóm: `K5-L3A-DAY08-TenNhom-FromWorkflowsToAgents` (xem [SUBMISSION.md](SUBMISSION.md))
-- URL repo, nhánh nộp, commit chốt:
+- Repo nhóm: `K5-L3A-DAY08-CAT-FromWorkflowsToAgents`
+- URL repo: https://github.com/GaGionCay/K5-L3A-DAY08-CAT-FromWorkflowsToAgents
+- Nhánh nộp: `main`.
+- Commit chốt: Chưa chốt; bổ sung sau khi tích hợp, kiểm thử và đối chiếu với `report/team/decision_adr.md`.
 
 ## Thành viên
 
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
-|   1 |        |      |       |        |         |
-|   2 |        |      |       |        |         |
+| 1 | Nguyễn Thế Cường | 2A202603355 | 26ai.cuongnt2@vinuni.edu.vn | Chill2004 | Workflow; tích hợp; kiểm thử crash; checklist nộp bài |
 
-Gợi ý chia vai:
+## Phân công và phối hợp
 
-- Nhóm 6 người: integration; workflow; single agent; orchestrator; ledger/policy/crash; eval/report.
-- Nhóm 4 người: workflow + integration; single; orchestrator + handoff; ledger + evaluation.
+| Người | Phần triển khai | Sản phẩm và trách nhiệm |
+| --- | --- | --- |
+| Cường | `src/lab8/shapes/workflow.py` | Luồng Python cố định; test riêng trong `src/tests/test_workflow.py`; chạy crash suite; tích hợp và kiểm tra hồ sơ nộp |
+| Trí | `src/lab8/shapes/single.py` | Vòng ReAct tối đa 8 bước, model chỉ chọn tool đọc; test riêng; benchmark 4 shape với seed quy định; tổng hợp metric và research card |
+| Ánh | `src/lab8/shapes/orchestrator.py` | Orchestrator và investigator chỉ đọc; handoff qua allowlist; test riêng; rà trace và tổng hợp báo cáo nhóm |
+
+- Mỗi người chịu trách nhiệm contract kết quả, quote đầy đủ, approval, trace và crash trong shape mình viết; không sửa host hoặc thước đo có sẵn.
+- Swarm có sẵn được dùng làm đối chứng, không phân công viết lại.
+- Cả nhóm chọn kiến trúc từ số liệu, hoàn thiện ADR và ablation; người tổng hợp báo cáo không thay thế trách nhiệm báo cáo cá nhân.
+- Mỗi thành viên phải có commit kỹ thuật và ít nhất một test thêm/sửa trên nhánh nộp, rồi tự nộp cùng link repo nhóm trên LMS.
 
 ## Bảng đóng góp
 
-`python -m lab8.check_submission` đọc bảng này bằng máy: giữ nguyên tiêu đề `## Bảng đóng góp` và các cột. Mỗi người một dòng: commit có nội dung và ít nhất một test đã thêm hoặc sửa.
+Giữ nguyên tiêu đề và các cột để `python -m lab8.check_submission` đọc. Chỉ ghi hash thật; các phần chưa commit hoặc chưa bàn giao được đánh dấu rõ bên dưới.
 
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
-| | | | |
+| Nguyễn Thế Cường | Workflow; test hồi quy; kiểm thử crash | `b75d072` (Workflow); commit chứa test và báo cáo sẽ bổ sung sau | `src/tests/test_workflow.py`: 7 hàm, 8 trường hợp chạy; test hiện chưa được xác nhận có trong lịch sử commit |
+
 
 ## Cá nhân
 
-Mỗi thành viên đồng thời tạo một báo cáo riêng trong `report/` theo dạng:
+Mỗi người copy mẫu `report/team/MSSV_HoTen.md` thành file riêng theo MSSV và họ tên không dấu; giữ lại file mẫu. Ghi công cụ AI đã dùng và cách tự kiểm chứng.
 
-```text
-report/team/MSSV_HoTen.md
-```
+### Nguyễn Thế Cường — 2A202603355
 
-Ví dụ: `report/team/20241234_NguyenVanAn.md`.
+- Báo cáo: [2A202603355_NguyenTheCuong.md](report/team/2A202603355_NguyenTheCuong.md).
+- Nhánh cá nhân: `ntc`.
+- Đã triển khai Workflow, truyền quote đầy đủ và `crash_at` vào host, không bắt `InjectedCrash`; mọi nhánh trả kết quả qua `finish()`.
+- Test bổ sung: chống chỉ dẫn trong ticket (2 seed); không suy mã đơn từ ticket; không lộ token trong output; retry với approval hết hạn; cap theo approval và retry; approval sai claim; crash → resume → retry 3 lần.
+- Kết quả đã xác nhận: 62 test student Workflow; 8 trường hợp test bổ sung; lệnh test mặc định 62 passed, 248 deselected; crash suite 20/20.
+- 8 test bổ sung đã nằm trong 62 test mặc định, không cộng hai số này. Bộ 62 test student Workflow là phạm vi riêng.
+- Bằng chứng crash: `src/reports/crash.json`. Trace cục bộ `R-workflow-C-001-s11` đã kiểm tra; không commit trace hoặc SQLite.
+- Còn cần hoàn tất: tự đánh giá cá nhân; commit test/báo cáo và cập nhật hash; nhiệm vụ tích hợp sau khi nhận hai shape còn lại. Trạng thái push commit Workflow cần đối chiếu remote trước khi chốt bài.
 
-Sao chép mục dưới đây cho từng thành viên.
-
-## MSSV_HoTen
-
-### Phần việc phụ trách
-
--
-
-### Đóng góp cụ thể
-
--
-
-### Bằng chứng
-
--

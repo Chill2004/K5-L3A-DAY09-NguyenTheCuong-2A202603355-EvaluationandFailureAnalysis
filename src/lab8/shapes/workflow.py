@@ -29,8 +29,17 @@ ones. `lab8.trace.Trace` does this; your own tracer is fine if it matches.
 
 from __future__ import annotations
 
-from lab8.schemas import RunResult
-from lab8.shapes.common import not_implemented
+from lab8.db import connect
+from lab8.durability import issue_refund
+from lab8.schemas import Budget, RunResult, make_run_id
+from lab8.shapes.common import finish
+from lab8.tools import (
+    compute_compensation,
+    get_claim_view,
+    lookup_order,
+    tool_cost,
+)
+from lab8.trace import Trace
 
 
 def run_claim(
@@ -40,7 +49,92 @@ def run_claim(
     store_path: str,
     crash_at: str | None = None,
 ) -> RunResult:
-    # TODO CP2 (student): thay stub này bằng shape workflow theo các bước ở docstring đầu file.
-    # TODO CP3 (student): truyền crash_at vào durability.issue_refund, không bắt InjectedCrash.
-    del store_path, crash_at
-    return not_implemented("workflow", claim_id, seed)
+    conn = connect(store_path)
+    budget = Budget()
+    trace = Trace(make_run_id("workflow", claim_id, seed))
+
+    # Mọi nhánh trả kết quả đều ghi trace và đọc ledger qua finish.
+    def done(
+        status: str,
+        proposal: int = 0,
+        reason: str | None = None,
+    ) -> RunResult:
+        trace.add(
+            "decision",
+            {
+                "status": status,
+                "proposal_amount": proposal,
+                "reason": reason,
+            },
+        )
+        return finish(
+            conn,
+            shape="workflow",
+            claim_id=claim_id,
+            seed=seed,
+            status=status,
+            proposal_amount=proposal,
+            budget=budget,
+            trace=trace,
+            error_reason=reason,
+        )
+
+    try:
+        # 1. Đọc claim qua tool, không ghi ticket vào trace.
+        budget.add_tool(tool_cost())
+        claim = get_claim_view(conn, claim_id)
+        trace.add("claim_lookup", {"found": claim["found"]})
+
+        if not claim["found"]:
+            return done("failed", reason="unknown_claim")
+
+        # 2. Không suy đoán order_id từ nội dung ticket.
+        if not claim.get("order_id"):
+            return done("needs_info", reason="missing_order_id")
+
+        # 3. Chỉ đọc đơn trong phạm vi quyền của principal.
+        budget.add_tool(tool_cost())
+        order_view = lookup_order(
+            conn,
+            claim["order_id"],
+            claim["principal_id"],
+        )
+        trace.add(
+            "order_lookup",
+            {
+                "visible": order_view["visible"],
+                "reason": order_view.get("reason"),
+            },
+        )
+
+        if not order_view["visible"]:
+            return done("escalated", reason=order_view.get("reason"))
+
+        # 4. Code tính tiền từ dữ liệu đơn và policy hiện hành.
+        budget.add_tool(tool_cost())
+        quote = compute_compensation(conn, order_view["order"])
+        proposal = int(quote["amount_vnd"])
+        trace.add("quote", quote)
+
+        # 5. Không đủ điều kiện nghiệp vụ thì không gọi host ghi tiền.
+        if proposal <= 0:
+            return done("denied", reason=quote.get("reason"))
+
+        # 6. Host kiểm approval, trần theo đơn và chống ghi trùng.
+        # Truyền quote đầy đủ; không tự trừ khoản đã hoàn.
+        # Không bắt InjectedCrash để test crash hoạt động đúng.
+        outcome = issue_refund(
+            conn,
+            claim_id,
+            proposal,
+            crash_at=crash_at,
+        )
+
+        if not outcome["ok"]:
+            status = "failed" if outcome["conflict"] else "denied"
+            return done(status, proposal, outcome["reason"])
+
+        return done("resolved", proposal)
+
+    finally:
+        conn.close()
