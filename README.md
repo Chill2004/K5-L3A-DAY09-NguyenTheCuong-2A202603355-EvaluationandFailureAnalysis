@@ -1,6 +1,6 @@
 # Lab09 — Evaluation and Failure Analysis
 
-[Repo Lab09 cá nhân](https://github.com/Chill2004/K5-L3A-DAY09-NguyenTheCuong-2A202603355-Evaluation-and-Failure-Analysis)
+
 
 Phần triển khai Lab09 nằm trên nhánh `starter/d09` của repo này.
 
