@@ -10,7 +10,8 @@
 - Ngày thực hiện: 17/11/2026
 - Repo thực hiện: https://github.com/Chill2004/K5-L3A-DAY08-NguyenTheCuong-2A202603355-FromWorkflowsToAgents
 - Nhánh làm bài: starter/d09
-- Commit cuối và URL PR: bổ sung khi chốt phiên bản và nộp bài.
+- Commit code/grader đã kiểm chứng: [f3e3a70d96018666c7fc2f483e901d67984307dd](https://github.com/Chill2004/K5-L3A-DAY08-NguyenTheCuong-2A202603355-FromWorkflowsToAgents/commit/f3e3a70d96018666c7fc2f483e901d67984307dd).
+- URL PR: bổ sung sau khi mở PR.
 
 ## 2. Mục tiêu và phạm vi
 
@@ -128,7 +129,7 @@ Các kết luận audit dựa trên nhãn và note replay. Các lựa chọn map
 
 ## 7. Mức độ hoàn thành và việc còn lại
 
-Các mốc Core, Advanced và Expert đã có triển khai và kiểm thử công khai cục bộ. Cần hoàn tất commit/hash, push nhánh starter/d09, mở PR đúng repo và xác nhận hai job eval-gate/eval-gate-v2 xanh theo bước nộp. Mô tả PR cần output regression block, mutation 3/3, A/A và bốn trap.
+Các mốc Core, Advanced và Expert đã có triển khai và kiểm thử công khai cục bộ. Code đã được commit và push lên starter/d09. Cần mở PR đúng repo và xác nhận hai job eval-gate/eval-gate-v2 xanh theo bước nộp. Mô tả PR cần output regression block, mutation 3/3, A/A và bốn trap.
 
 Bộ chấm ẩn và key anchor do giảng viên giữ chưa được kiểm tra. MockLLM, bộ public nhỏ và judge replay chưa chứng minh chất lượng trên người dùng/model thật. Bonus port Inspect AI/DeepEval là tùy chọn, chưa thực hiện.
 
@@ -155,4 +156,4 @@ Các file log trong thư mục evidence được tạo từ stdout/stderr của 
 - [Baseline v2](../../src/reports/baseline_v2.json), run E-swarm-20261117-feef.
 - [Slice regression v2](../../src/reports/eval_slice_regression.json), run E-slice_regression-20261117-feef.
 
-Các report cần có trong commit nộp để link hoạt động trên GitHub. Không chỉnh tay JSON. Trace và SQLite dùng phân tích cục bộ, không đưa vào thư mục evidence. Commit hash và URL PR sẽ bổ sung sau khi chốt Git.
+Các report cần có trong commit nộp để link hoạt động trên GitHub. Không chỉnh tay JSON. Trace và SQLite dùng phân tích cục bộ, không đưa vào thư mục evidence. Hash code đã kiểm chứng được ghi ở mục 1. URL PR sẽ bổ sung sau khi mở PR.

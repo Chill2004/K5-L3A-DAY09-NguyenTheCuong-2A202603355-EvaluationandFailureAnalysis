@@ -1,8 +1,8 @@
-﻿# Eval card — LogiX-VN refund agent
+# Eval card — LogiX-VN refund agent
 
 ## 1. Thiết lập và phiên bản
 
-Nguyễn Thế Cường thực hiện đánh giá trên repo fork cá nhân. MockLLM chạy offline trên Python 3.12.0, mỗi trial có SQLite mới. Nhãn được lưu riêng trong labels_v1.json hoặc labels_v2.json. Commit code và grader cuối sẽ bổ sung khi chốt Git, hiện chưa commit.
+Nguyễn Thế Cường thực hiện đánh giá trên repo fork cá nhân. MockLLM chạy offline trên Python 3.12.0, mỗi trial có SQLite mới. Nhãn được lưu riêng trong labels_v1.json hoặc labels_v2.json. Commit code và grader đã kiểm chứng là f3e3a70d96018666c7fc2f483e901d67984307dd. Link bằng chứng ở dưới.
 
 | Bộ dữ liệu | Kích thước | SHA | Metric spec |
 |---|---|---|---|
@@ -124,3 +124,5 @@ Swarm Lab08 không xuất event reply. ReplyAmountCorrect trả True với lý d
 MockLLM không đại diện model thật, 14/28 item nhỏ và judge replay công khai chưa có held-out độc lập. Hidden grader và key anchor chỉ giảng viên có. Kết quả công khai chưa bảo đảm tổng quát hóa. Bonus port Inspect AI/DeepEval là tùy chọn, chưa thực hiện.
 
 Thay item/nhãn thì tăng eval_set_version và tạo baseline tương ứng. Đổi metric/ngưỡng thì tăng metric_spec_version. Ngưỡng trên cùng eval-set version chỉ được chặt hơn theo đề.
+
+- Commit code/grader đã kiểm chứng: [f3e3a70d96018666c7fc2f483e901d67984307dd](https://github.com/Chill2004/K5-L3A-DAY08-NguyenTheCuong-2A202603355-FromWorkflowsToAgents/commit/f3e3a70d96018666c7fc2f483e901d67984307dd).
