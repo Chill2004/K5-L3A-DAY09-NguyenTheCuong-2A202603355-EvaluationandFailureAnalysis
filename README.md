@@ -1,11 +1,3 @@
-# Lab09 — Evaluation and Failure Analysis
-
-
-
-Phần triển khai Lab09 nằm trên nhánh `starter/d09` của repo này.
-
-
-
 # Lab 8 — From Workflows to Agents (LogiX-VN: một task, bốn kiến trúc)
 
 AI20K K5, ngày 8. Nhóm xử lý claim hoàn phí vận chuyển của công ty giả lập LogiX-VN bằng **bốn kiến trúc** (workflow, single agent, orchestrator, swarm), rồi dựa trên số đo để chọn kiến trúc **ít tự chủ nhất mà vẫn làm được việc**. Dữ liệu là dữ liệu giả. Không cần GPU, API key hay internet trong giờ lab; chạy được trên Windows, macOS và Linux.
