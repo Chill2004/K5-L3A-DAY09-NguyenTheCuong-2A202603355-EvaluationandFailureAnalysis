@@ -1,0 +1,77 @@
+python -m pytest -q -o addopts=
+........................................................................ [ 19%]
+........................................................................ [ 39%]
+........................................................................ [ 59%]
+........................................................................ [ 79%]
+........................................................................ [ 99%]
+.                                                                        [100%]
+361 passed in 30.38s
+
+EXIT=0, EXPECTED=0
+
+python -m lab9.evalset --check
+eval set ec9e461eceaa: 0 problem(s)
+
+EXIT=0, EXPECTED=0
+
+python -m lab9.evalset --v2
+eval set v2 feef2ca73e4f: 0 problem(s)
+
+EXIT=0, EXPECTED=0
+
+python -m lab9.ci_check --pr reports/baseline_v1.json --baseline reports/baseline_v1.json
+exit 0 — baseline and spec look sound
+
+EXIT=0, EXPECTED=0
+
+python -m lab9.gate --pr reports/traps/evaluator_errors_as_nan.json --baseline reports/baseline_v2.json --spec config/metric_spec_v2.yaml
+gate: PR E-slice_regression-20261117-feef vs main E-swarm-20261117-feef · eval set feef2ca73e4f
+  INTEGRITY PR: invalid row value proposal_correct
+  INTEGRITY PR: invalid row value pass_rate
+  INTEGRITY PR: invalid row value refund_amount_correct
+exit 1 — blocked: integrity
+
+EXIT=1, EXPECTED=1
+
+python -m lab9.gate --pr reports/traps/dropped_failing_rows.json --baseline reports/baseline_v2.json --spec config/metric_spec_v2.yaml
+gate: PR E-slice_regression-20261117-feef vs main E-swarm-20261117-feef · eval set feef2ca73e4f
+  INTEGRITY PR: row count differs from items x seeds
+  INTEGRITY PR: incomplete item/seed coverage
+  INTEGRITY PR: invalid aggregate pass_at_3
+  INTEGRITY PR: invalid aggregate pass_hat_3
+  INTEGRITY PR: invalid aggregate pass_at_5
+  INTEGRITY PR: invalid aggregate pass_hat_5
+  INTEGRITY PR item/seed set differs from baseline
+exit 1 — blocked: integrity
+
+EXIT=1, EXPECTED=1
+
+python -m lab9.gate --pr reports/traps/cherry_picked_seeds.json --baseline reports/baseline_v2.json --spec config/metric_spec_v2.yaml
+gate: PR E-slice_regression-20261117-feef vs main E-swarm-20261117-feef · eval set feef2ca73e4f
+  INTEGRITY PR: invalid aggregate pass_at_3
+  INTEGRITY PR: invalid aggregate pass_hat_3
+  INTEGRITY PR: invalid aggregate pass_at_5
+  INTEGRITY PR: invalid aggregate pass_hat_5
+  INTEGRITY PR item/seed set differs from baseline
+exit 1 — blocked: integrity
+
+EXIT=1, EXPECTED=1
+
+python -m lab9.gate --pr reports/traps/loosened_spec.json --baseline reports/baseline_v2.json --spec reports/traps/loosened_spec.spec.yaml --base-spec config/metric_spec_v2.yaml
+gate: PR E-slice_regression-20261117-feef vs main E-swarm-20261117-feef · eval set feef2ca73e4f
+  INTEGRITY ratchet: loosened db_fact_kept/min
+  INTEGRITY ratchet: loosened refund_amount_correct/min
+  INTEGRITY ratchet: dropped CI requirement refund_amount_correct
+  INTEGRITY ratchet: loosened pass_rate/min
+  INTEGRITY ratchet: dropped CI requirement pass_rate
+  INTEGRITY ratchet: loosened proposal_correct/min
+  INTEGRITY ratchet: dropped CI requirement proposal_correct
+  INTEGRITY ratchet: loosened reply_amount_correct/min
+  INTEGRITY ratchet: dropped CI requirement reply_amount_correct
+  INTEGRITY ratchet: loosened pass_hat_5/min
+  INTEGRITY ratchet: removed slices denial
+  INTEGRITY ratchet: removed slices money_movement
+  INTEGRITY ratchet: removed slices adversarial
+exit 1 — blocked: integrity
+
+EXIT=1, EXPECTED=1
